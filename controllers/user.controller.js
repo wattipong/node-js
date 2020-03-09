@@ -6,11 +6,20 @@ const bcrypt = require('bcryptjs');
 exports.register = async (req, res, next) => {
 
     try {
-         const { username, password, name } = req.body;
-          console.log(req.body);
+        const { username, password, name } = req.body;
+        const already = await userModel.findOne({ where: { "username": username } })
+        if (already) {
+            return res.status(422).json({
+                "code": 'ALREADY_FIELD',
+                "description": `Username: ${username} is Already`,
+                "field": "username"
+            });
 
+        }
+        
         if (username === undefined || username === '') {
             return res.status(422).json({
+
                 'code': 'REQUIRED_FIELD_MISSING',
                 'description': 'Username Is Required',
                 'field': 'username',
@@ -24,7 +33,9 @@ exports.register = async (req, res, next) => {
         }
         let register = await userModel.create(tmp);
         res.status(200).json({
-            'Message': 'Rister User SuccessFuly'
+
+            'Message': `Register  Username: ${register.username} SuccessFuly`,
+
         });
 
     } catch (error) {
