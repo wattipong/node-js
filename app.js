@@ -1,30 +1,37 @@
-const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const bodyParser = require('body-parser');
+const http = require('http');
+
 const cors = require('cors');
+const helmet = require('helmet');
 const dotenv = require('dotenv');
 const os = require('os');
-const helmet = require('helmet');
-
-const http = require('http');
+const rateLimit = require("express-rate-limit");
 //Import Routes
 const usersRouter = require('./routes/users');
+const passportJWT = require('./middlewares/passport.jwt')();
+const errorHandler = require('./middlewares/error.handler');
 
-//Connecting DataBase
-const mysqlconecting = require('./configs/connect');
-mysqlconecting;
 
-dotenv.config();
 
 const app = express();
+dotenv.config();
 app.use(cors());
 app.use(helmet());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 
+
+//Fix Port Run Internal
+http.createServer(app).listen(8080)
+
+app.set('trust proxy');
+const limiter = rateLimit({
+    windowMs: 10 * 1000,
+    max: 5 // limit each IP to 100 requests per windowMs
+});
+
+app.use(limiter);
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -32,15 +39,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(passportJWT.initialize());
+
 //Call Routes
 app.use('/users', usersRouter);
 
-//Fix Port Run Internal
-http.createServer(app).listen(8080)
+app.use(errorHandler);
 
-
-//Fix Runing External
-//app.listen(process.env.PORT || process.env.PORT_SERVER, () => console.log('express server listenting on - http://' + os.hostname() + ':' + process.env.PORT));
+//app.listen(process.env.PORT || process.env.PORT_SERVER, () => console.log('express server listenting on - http://' + os.hostname() + ':' + process.env.PORT_SERVER));
 
 
 
