@@ -4,9 +4,11 @@ const bcrypt = require('bcryptjs');
 
 
 exports.register = async (req, res, next) => {
-    const { username, password, name } = req.body;
 
     try {
+         const { username, password, name } = req.body;
+          console.log(req.body);
+
         if (username === undefined || username === '') {
             return res.status(422).json({
                 'code': 'REQUIRED_FIELD_MISSING',
@@ -40,7 +42,7 @@ exports.login = async (req, res, next) => {
     const { username, password } = req.body;
 
     try {
-        let user = await User.findOne({ where: { "username": username } });
+        let user = await userModel.findOne({ where: { "username": username } });
         if (!user) {
 
             return res.status(200).json({

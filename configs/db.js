@@ -22,7 +22,6 @@ module.exports = {
         port: 3306,
         logging: false,
         timezone: "+07:00"
-   
     },
 
 

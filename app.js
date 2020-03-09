@@ -6,8 +6,8 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const os = require('os')
-
+const os = require('os');
+const helmet = require('helmet');
 //Import Routes
 const usersRouter = require('./routes/users');
 
@@ -17,9 +17,9 @@ mysqlconecting;
 
 const app = express();
 app.use(cors());
-// app.use(helmet());
+app.use(helmet());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false }));
 
 
 app.use(logger('dev'));
@@ -31,7 +31,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 //Call Routes
 app.use('/users', usersRouter);
 
-app.listen(process.env.PORT || process.env.PORT_SERVER, () => console.log('express server listenting on - http://' + os.hostname() + ':' + process.env.PORT_SERVER));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -48,7 +47,7 @@ app.use((err, req, res, next) => {
   res.render('error');
 });
 
-
+app.listen(process.env.PORT || process.env.PORT_SERVER, () => console.log('express server listenting on - http://' + os.hostname() + ':' + process.env.PORT_SERVER));
 
 
 
