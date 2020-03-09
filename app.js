@@ -38,6 +38,7 @@ app.use('/users', usersRouter);
 //Fix Port Run Internal
 http.createServer(app).listen(8080)
 
+
 //Fix Runing External
 //app.listen(process.env.PORT || process.env.PORT_SERVER, () => console.log('express server listenting on - http://' + os.hostname() + ':' + process.env.PORT));
 
