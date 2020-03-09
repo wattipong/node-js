@@ -23,6 +23,7 @@ module.exports = () => {
     });
 
     passport.use(strategy);
+    
 
     return {
         initialize: () => {
