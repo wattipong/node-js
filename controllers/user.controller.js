@@ -16,7 +16,7 @@ exports.register = async (req, res, next) => {
             });
 
         }
-        
+
         if (username === undefined || username === '') {
             return res.status(422).json({
 
@@ -60,7 +60,8 @@ exports.login = async (req, res, next) => {
 
                 'code': 'BAD_REQUEST_ERROR',
                 'description': 'username not found in the system',
-                'field': 'username'
+                'field': 'username',
+                'OK': false
             });
         }
 
@@ -71,7 +72,9 @@ exports.login = async (req, res, next) => {
 
                 'code': 'BAD_VALID_ERROR',
                 'description': 'Password is incorrect. Please Try Again',
-                'field': 'password'
+                'field': 'password',
+                'OK': false
+
             });
         }
 
@@ -79,10 +82,11 @@ exports.login = async (req, res, next) => {
 
         if (token) {
 
-            return res.status(201).json({
+            return res.status(200).json({
                 'access_token': token,
                 'token_type': 'Bearer',
-                'message': 'Login SuccessFully'
+                'message': 'Login SuccessFully',
+                'OK': true
             });
 
         } else {
@@ -105,5 +109,11 @@ exports.login = async (req, res, next) => {
 
 
 
+
+}
+
+exports.users = async(req,res,next)=>{
+
+    
 
 }

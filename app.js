@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const http = require('http');
+//const http = require('http');
 
 const cors = require('cors');
 const helmet = require('helmet');
@@ -14,16 +14,13 @@ const usersRouter = require('./routes/users');
 const passportJWT = require('./middlewares/passport.jwt')();
 const errorHandler = require('./middlewares/error.handler');
 
-
-
-const app = express();
 dotenv.config();
+const app = express();
 app.use(cors());
 app.use(helmet());
 
-
 //Fix Port Run Internal
-http.createServer(app).listen(8080)
+//http.createServer(app).listen(8080)
 
 app.set('trust proxy');
 const limiter = rateLimit({
@@ -46,7 +43,7 @@ app.use('/users', usersRouter);
 
 app.use(errorHandler);
 
-//app.listen(process.env.PORT || process.env.PORT_SERVER, () => console.log('express server listenting on - http://' + os.hostname() + ':' + process.env.PORT_SERVER));
+//app.listen(process.env.PORT || process.env.PORT_SERVER, () => console.log('express server listenting on - http://' + os.hostname() + ':' + process.env.PORT_SERVER ));
 
 
 
