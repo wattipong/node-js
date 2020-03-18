@@ -43,7 +43,7 @@ app.use('/users', usersRouter);
 
 app.use(errorHandler);
 
-//app.listen(process.env.PORT || process.env.PORT_SERVER, () => console.log('express server listenting on - http://' + os.hostname() + ':' + process.env.PORT_SERVER ));
+app.listen(process.env.PORT || process.env.PORT_SERVER, () => console.log('express server listenting on - http://' + os.hostname() + ':' + process.env.PORT_SERVER ));
 
 
 
