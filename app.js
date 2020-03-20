@@ -15,8 +15,10 @@ const productRouter = require('./routes/products');
 //Middlewares
 const passportJWT = require('./middlewares/passport.jwt')();
 const errorHandler = require('./middlewares/error.handler');
-var https = require('https');
-var fs = require('fs');
+const https = require('https');
+const fs = require('fs');
+
+
 
 dotenv.config();
 const app = express();
@@ -40,6 +42,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+//call Images
+app.use(express.static(path.join(__dirname, '/controllers/uploaded')));
 
 app.use(passportJWT.initialize());
 

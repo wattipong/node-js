@@ -16,7 +16,6 @@ exports.register = async (req, res, next) => {
             });
 
         }
-
         if (username === undefined || username === '') {
             return res.status(422).json({
 
