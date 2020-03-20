@@ -1,11 +1,11 @@
-const Sequetlize = require('sequelize');
+const Sequelize = require('sequelize');
 const ConnectDB = require('../configs/connect');
 
 const user = ConnectDB.define(
     'user', {
-    username: { type: Sequetlize.STRING, allowNull: false },
-    password: { type: Sequetlize.STRING, allowNull: false },
-    name: { type: Sequetlize.STRING, allowNull: false },
+    username: { type: Sequelize.STRING, allowNull: false },
+    password: { type: Sequelize.STRING, allowNull: false },
+    name: { type: Sequelize.STRING, allowNull: false },
 
 }
 
