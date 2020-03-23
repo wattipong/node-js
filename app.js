@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const http = require('http');
 
+
 const cors = require('cors');
 const helmet = require('helmet');
 const dotenv = require('dotenv');
@@ -14,9 +15,9 @@ const usersRouter = require('./routes/users');
 const productRouter = require('./routes/products');
 //Middlewares
 const passportJWT = require('./middlewares/passport.jwt')();
+const verify = require('./middlewares/verifyToken');
 const errorHandler = require('./middlewares/error.handler');
-const https = require('https');
-const fs = require('fs');
+
 
 
 
@@ -26,19 +27,22 @@ app.use(cors());
 app.use(helmet());
 
 
+
 //Fix Port Run Internal
 //http.createServer(app).listen(8080)
 
-app.set('trust proxy');
-const limiter = rateLimit({
-    windowMs: 10 * 1000,
-    max: 5 // limit each IP to 100 requests per windowMs
-});
+// app.set('trust proxy');
+// const limiter = rateLimit({
+//     windowMs: 10 * 1000,
+//     max: 5 // limit each IP to 100 requests per windowMs
+// });
 
-app.use(limiter);
+// app.use(limiter);
+
 
 app.use(logger('dev'));
 app.use(express.json());
+app.use(passportJWT.initialize());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -46,11 +50,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 //call Images
 app.use(express.static(path.join(__dirname, '/controllers/uploaded')));
 
-app.use(passportJWT.initialize());
+
+
 
 //Call Routes
 app.use('/users', usersRouter);
-app.use('/products', productRouter);
+app.use('/products',passportJWT.authenticate(), productRouter);
+//app.use('/products', productRouter);
 
 app.use(errorHandler);
 

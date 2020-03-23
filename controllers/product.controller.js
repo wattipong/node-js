@@ -8,17 +8,15 @@ const Op = Sequelize.Op;
 const jsftp = require('jsftp');
 
 
-//Method
+//**********************  Method  *****************
 uploadImage = async (files, doc) => {
-
     if (files.image != null) {
         var fileExtention = files.image.name.split(".")[1];
         const name = doc.name
 
         doc.image = `${name}.${fileExtention}`;
 
-        var newpath =
-            path.resolve(__dirname + "/uploaded/images/") + "/" + doc.image;
+        var newpath = path.resolve(__dirname + "/uploaded/images/") + "/" + doc.image;
 
         console.log(newpath);
         if (fs.exists(newpath)) {
@@ -35,7 +33,10 @@ uploadImage = async (files, doc) => {
     }
 };
 
-//Module
+//**************************** Module  *******************
+
+
+//Get Product By ID
 exports.addproduct = async (req, res, next) => {
 
     try {
@@ -59,7 +60,7 @@ exports.addproduct = async (req, res, next) => {
     }
 
 }
-
+//get Product By ID 
 exports.product = async (req, res, ) => {
     try {
         console.log(req.params.id);
@@ -75,7 +76,7 @@ exports.product = async (req, res, ) => {
 
 //get Product by Keyword
 exports.keyproduct = async (req, res) => {
-    
+
     const { keyword } = req.params;
     let result = await product.findAll({
         where: {
@@ -84,6 +85,21 @@ exports.keyproduct = async (req, res) => {
     });
 
     res.json(result);
+
+}
+//get All Products
+exports.allproduct = async (req, res) => {
+
+    try {
+        const result = await product.findAll();
+
+        res.json({ "result": result });
+
+    } catch (error) {
+
+        res.json({ "message": error });
+
+    }
 
 }
 
